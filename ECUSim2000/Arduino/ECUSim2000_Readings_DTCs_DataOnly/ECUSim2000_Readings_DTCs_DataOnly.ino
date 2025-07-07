@@ -89,7 +89,7 @@ int requestPID(uint8_t mode, uint8_t pid) {
 
   tCAN response;
   unsigned long start = millis();
-  while (millis() - start < 2000) {
+  while (millis() - start < 10) {
     if (mcp2515_check_message() && mcp2515_get_message(&response) && 
         response.id == OBD_RESPONSE_ID_ECM && 
         response.data[1] == (mode | 0x40) && 
@@ -125,7 +125,7 @@ String collectDTCs(uint8_t mode, uint16_t respID) {
   int totalBytes = 0;
   int processedBytes = 0;
 
-  while (millis() - start < 2000) {
+  while (millis() - start < 25) {
     if (mcp2515_check_message() && mcp2515_get_message(&response) && response.id == respID) {
       if (isFirstFrame && response.data[0] == 0x10) {
         totalBytes = ((response.data[1] << 8) | response.data[2]) - 2;
@@ -213,7 +213,7 @@ bool clearDTCs() {
   unsigned long start = millis();
   bool ecmCleared = false, tcmCleared = false, absCleared = false;
 
-  while (millis() - start < 2000) {
+  while (millis() - start < 25) {
     if (mcp2515_check_message() && mcp2515_get_message(&response)) {
       if (response.data[1] == 0x44) {
         if (response.id == OBD_RESPONSE_ID_ECM) ecmCleared = true;
