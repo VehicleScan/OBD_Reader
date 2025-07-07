@@ -184,7 +184,7 @@ bool OBDSensorData::clearDTCs() {
     long long start_time = currentTimeMillis();
     ssize_t bytes_read = 0;
     
-    while (currentTimeMillis() - start_time < 3000 && bytes_read < 2) {
+    while (currentTimeMillis() - start_time < 1000 && bytes_read < 2) {
         ssize_t n = read(serial_fd, response + bytes_read, 2 - bytes_read);
         if (n > 0) bytes_read += n;
         else if (n < 0) break;
